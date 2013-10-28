@@ -55,7 +55,7 @@
 
    function detalle_d($id_cc)
     {
-       $this->db->select('a.*,sum(a.cans)as cans,b.susa');
+       $this->db->select('a.*,sum(a.cans)as cans,b.susa,b.codigo');
        $this->db->from('metro.surtido_d a');
        $this->db->join('catalogo.cat_nvo_metro_sec b', 'a.clave=b.clave_metro');
        $this->db->where('a.id_ped',$id_cc);
@@ -84,7 +84,7 @@
             
             $tabla.="
             <tr>
-            <td align=\"center\">".$row->clave."</td>
+            <td align=\"center\">".$row->clave."<br />".$row->codigo."</td>
             <td align=\"left\">".$row->susa."</td>
             </tr>
             ";
@@ -367,7 +367,7 @@ function imprime_detalle($id)
         $importe=0;
         $tocan=0;
         $num=0;
-        $sql = "SELECT a.*,b.susa from surtido_d a
+        $sql = "SELECT a.*,b.susa,b.codigo from surtido_d a
         left join catalogo.cat_nvo_metro_sec b on a.clave=b.clave_metro
         where a.id_ped= ? order by clave"; //and a.aplica='SI' Ivan 03/07/2013
         $query = $this->db->query($sql,array($id));
@@ -380,21 +380,21 @@ function imprime_detalle($id)
         <thead>
         
         <tr>
-        <th colspan=\"8\">______________________________________________________________________________________________</th>
+        <th colspan=\"8\">___________________________________________________________________________________________________</th>
         </tr>
         
         <tr>
-        <th width=\"70\"><strong>Clave</strong></th>
+        <th width=\"100\"><strong>Clave</strong></th>
         <th width=\"200\"><strong>Sustancia Activa</strong></th>
         <th width=\"80\" align=\"right\"><strong>Cantidad</strong></th>
         <th width=\"80\" align=\"center\"><strong>Lote</strong></th>
         <th width=\"80\" align=\"right\"><strong>Caducidad</strong></th>
-        <th width=\"50\" align=\"right\"><strong>Precio</strong></th>
-        <th width=\"80\" align=\"right\"><strong>Importe</strong></th>
+        <th width=\"60\" align=\"right\"><strong>Precio</strong></th>
+        <th width=\"70\" align=\"right\"><strong>Importe</strong></th>
         </tr>
         
         <tr>
-        <th colspan=\"8\">______________________________________________________________________________________________</th>
+        <th colspan=\"8\">___________________________________________________________________________________________________</th>
         </tr>
         
         </thead>
@@ -408,13 +408,13 @@ function imprime_detalle($id)
             $importe=$row->cans*$row->vta;  
             $tabla.="
             <tr>
-            <td width=\"70\" align=\"left\">".$row->clave."</td>
+            <td width=\"100\" align=\"left\">".$row->clave."<br />".$row->codigo."</td>
             <td width=\"200\" align=\"left\">".$row->susa."</td>
             <td width=\"80\" align=\"right\">".$row->cans."</td>
             <td width=\"80\" align=\"center\">".$row->lote."</td>
             <td width=\"80\" align=\"right\">".$row->cad."</td>
-            <td width=\"50\" align=\"right\">".number_format($row->vta,2)."</td>
-            <td width=\"80\" align=\"right\">".number_format($importe,2)."</td>
+            <td width=\"60\" align=\"right\">".number_format($row->vta,2)."</td>
+            <td width=\"70\" align=\"right\">".number_format($importe,2)."</td>
             </tr>
             ";
         $tocan=$tocan+$row->cans;
@@ -424,11 +424,11 @@ function imprime_detalle($id)
         
         $tabla.="
         <tr>
-        <th colspan=\"8\">______________________________________________________________________________________________</th>
+        <th colspan=\"8\">___________________________________________________________________________________________________</th>
         </tr>
         
         <tr>
-        <td width=\"270\" align=\"left\">Total de productos.: $num</td>
+        <td width=\"300\" align=\"left\">Total de productos.: $num</td>
         <td width=\"80\" align=\"right\">".$tocan."</td>
         <td width=\"290\" align=\"right\">".number_format($timporte,2)."</td>
         

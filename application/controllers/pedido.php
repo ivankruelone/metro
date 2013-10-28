@@ -212,8 +212,8 @@ function insert_d()
             </tr>
             
             </table>";
-            $data['detalle'] = $this->pedido_model->imprime_detalle_s($id_cc);
-            $this->load->view('impresiones/reporte', $data);
+            echo $data['detalle'] = $this->pedido_model->imprime_detalle_s($id_cc);
+            //$this->load->view('impresiones/reporte', $data);
 			
 		}
 //////////////////////////////////////////////////////   

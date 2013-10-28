@@ -113,9 +113,9 @@
    function detalle_d($id_cc)
     {
        
-       $this->db->select('a.*,b.susa1');
+       $this->db->select('a.*,b.susa');
        $this->db->from('metro.compra_d a');
-       $this->db->join('catalogo.sec_generica b', 'a.clave=b.sec');
+       $this->db->join('catalogo.cat_nuevo_metro b', 'a.clave=b.sec');
        $this->db->where('id_cc',$id_cc);
        $this->db->order_by('id desc');
        $query = $this->db->get();
@@ -153,7 +153,7 @@
             <tr>
             <td align=\"center\">".$row->clave."</td>
             <td align=\"left\">".$row->codigo."</td>
-            <td align=\"left\">".$row->susa1."</td>
+            <td align=\"left\">".$row->susa."</td>
             <td align=\"center\">".$row->can."</td>
             <td align=\"center\">".$row->canr."</td>
             <td align=\"center\">".$row->lote."</td>
@@ -240,9 +240,9 @@
    function detalle_d_historico($id_cc,$tit)
     {
        
-       $this->db->select('a.*,b.susa1');
+       $this->db->select('a.*,b.susa');
        $this->db->from('metro.compra_d a');
-       $this->db->join('catalogo.sec_generica b', 'a.clave=b.sec');
+       $this->db->join('catalogo.cat_nuevo_metro b', 'a.clave=b.sec');
        $this->db->where('id_cc',$id_cc);
        $query = $this->db->get();
         
@@ -276,7 +276,7 @@
             $tabla.="
             <tr>
             <td align=\"center\">".$row->clave."</td>
-            <td align=\"left\">".$row->susa1."</td>
+            <td align=\"left\">".$row->susa."</td>
             <td align=\"center\">".$row->can."</td>
             <td align=\"center\">".$row->canr."</td>
             <td align=\"center\">".$row->lote."</td>
@@ -349,8 +349,8 @@ function create_member_c($folio,$tipo,$cia,$factura,$prvx,$compra,$orden)
 function create_member_d($id_cc,$orden,$clave,$lote,$cad,$can,$canr,$costof,$cod)
 	{
         
-       $sql = "SELECT * FROM catalogo.sec_generica where sec=$clave";
-        $query = $this->db->query($sql,array($orden,$clave,$can));
+       $sql = "SELECT * FROM catalogo.cat_nuevo_metro where sec=$clave";
+       $query = $this->db->query($sql,array($orden,$clave,$can));
 
         //echo $this->db->last_query();
         //die();
@@ -358,17 +358,17 @@ function create_member_d($id_cc,$orden,$clave,$lote,$cad,$can,$canr,$costof,$cod
         
         if($query->num_rows() > 0){
         
-        $row= $query->row();
-        $cans=0;    
-        $costo=$row->costo; 
+        //$row= $query->row();
+        //$cans=0;    
+        //$costo=$row->costo; 
         
         
         $sql1 = "SELECT * FROM compra_d where id_cc= ? and clave= ? and lote= ? ";
        $query1 = $this->db->query($sql1,array($id_cc,$clave,$lote));
-       
-       if($query1->num_rows()== 0){
-        //echo $this->db->last_query();
+       //echo $this->db->last_query();
         //die();
+       if($query1->num_rows()== 0){
+        
     //////////////////////////////////////////////inserta los datos en la base de datos
     	
         $new_member_insert_data = array(
@@ -378,7 +378,7 @@ function create_member_d($id_cc,$orden,$clave,$lote,$cad,$can,$canr,$costof,$cod
             'caducidad' => $cad,
 			'can' => $can,
 			'fecha'=> date('Y-m-d H:s:i'),
-            'canp'=> $cans,
+            'canp'=> $can,
             'costo'=> $costof,
             'codigo'=>$cod,
             'canr'=> $canr
@@ -537,9 +537,9 @@ function imprime_detalle($id)
         $tocan=0;
         $tocanr=0;
         $num=0;
-        $sql = "SELECT a.*,b.susa1
+        $sql = "SELECT a.*,b.susa
         from compra_d a
-        left join catalogo.sec_generica b on a.clave=b.sec
+        left join catalogo.cat_nuevo_metro b on a.clave=b.sec
         where a.id_cc= ? order by clave";
         $query = $this->db->query($sql,array($id));
         
@@ -572,7 +572,7 @@ function imprime_detalle($id)
             $tabla.="
             <tr>
             <td width= \"70\" align=\"left\">".$row->clave."</td>
-            <td width= \"280\" align=\"left\">".$row->susa1."</td>
+            <td width= \"280\" align=\"left\">".$row->susa."</td>
             <td width= \"80\" align=\"left\">".$row->lote."</td>
             <td width= \"80\" align=\"right\">".$row->caducidad."</td>
             <td width= \"60\" align=\"right\">".$row->can."</td>

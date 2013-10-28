@@ -254,7 +254,9 @@ function imprime_detalle_s($id)
         $sql = "SELECT c.mueble, a.*,b.susa from pedido_d a
         left join catalogo.cat_nuevo_metro b on a.clave=b.clave_metro
         left join catalogo.almacen_mue c on a.clave=c.sec
-        where a.id_cc= ? and a.tipo=1 order by clave";
+        where a.id_cc= ? and a.tipo=1  group by a.clave order by clave";
+
+
         $query = $this->db->query($sql,array($id));
         
         $tabla= "
